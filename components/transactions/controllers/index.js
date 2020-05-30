@@ -1,11 +1,16 @@
 const Transaction = require("../models");
 const elementCoin = require("../../../utils/blockchain");
 
+exports.getTransactions = async (req, res, next) => {
+  const { address } = req.query;
+  // console.log("Transactions: " + elementCoin.getTransactionsOfWallet(address));
+  return res.json({
+    transactions: elementCoin.getTransactionsOfWallet(address),
+  });
+};
+
 exports.getBalance = async (req, res, next) => {
   const { address } = req.query;
-  console.log(address);
-  
-  
   console.log("Balance: " + elementCoin.getBalanceOfWallet(address));
   return res.json({
     balance: elementCoin.getBalanceOfWallet(address),

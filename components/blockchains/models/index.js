@@ -1,5 +1,6 @@
 const Block = require("../../blocks/models");
 const Transaction = require("../../transactions/models");
+const MINUTES = 1;
 
 module.exports = class BlockChain {
   constructor() {
@@ -21,16 +22,21 @@ module.exports = class BlockChain {
     const rewardTx = new Transaction(null, address, this.reward);
     this.pendingTransactions.push(rewardTx);
 
-    let newBlock = new Block(
-      this.chain.length,
-      Date.now(),
-      this.pendingTransactions,
-      this.getLastedBlock().hash
-    );
-    newBlock.mineBlock(this.difficulty);
+    let lastBlock = this.getLastedBlock();
+    console.log(Date.now() - lastBlock.timestamp);
 
-    this.chain.push(newBlock);
-    this.pendingTransactions = [];
+    if (Date.now() - lastBlock.timestamp > MINUTES * 60 * 1000) {
+      let newBlock = new Block(
+        this.chain.length,
+        Date.now(),
+        this.pendingTransactions,
+        this.getLastedBlock().hash
+      );
+      newBlock.mineBlock(this.difficulty);
+
+      this.chain.push(newBlock);
+      this.pendingTransactions = [];
+    }
   }
 
   addTransaction(transaction) {
@@ -44,13 +50,21 @@ module.exports = class BlockChain {
 
     for (const block of this.chain) {
       for (const tx of block.transactions) {
-        console.log(tx);
-
         if (tx.from === address) balance -= parseInt(tx.amount);
         if (tx.to === address) balance += parseInt(tx.amount);
       }
     }
     return balance;
+  }
+
+  getTransactionsOfWallet(address) {
+    let transactions = [];
+    for (const block of this.chain) {
+      for (const tx of block.transactions) {
+        if (tx.from === address || tx.to === address) transactions.push(tx);
+      }
+    }
+    return transactions;
   }
 
   isValidChain() {

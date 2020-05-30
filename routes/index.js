@@ -13,5 +13,6 @@ router.post("/sign-up", userController.signUp);
 router.post("/send", transactionController.createTransaction);
 router.get("/balance", transactionController.getBalance);
 router.get("/last-block", transactionController.getLastBlock);
+router.get("/transactions", transactionController.getTransactions);
 
 module.exports = router;
