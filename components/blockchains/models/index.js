@@ -67,6 +67,16 @@ module.exports = class BlockChain {
     return transactions;
   }
 
+  getAllTransactions() {
+    let transactions = [];
+    for (const block of this.chain) {
+      for (const tx of block.transactions) {
+        transactions.push(tx);
+      }
+    }
+    return transactions;
+  }
+
   isValidChain() {
     if (JSON.stringify(this.chain[0]) !== JSON.stringify(this.getGenesisBlock())) return false;
     for (let i = 1; i < this.chain.length - 1; i++) {

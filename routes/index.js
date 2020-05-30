@@ -14,5 +14,6 @@ router.post("/send", transactionController.createTransaction);
 router.get("/balance", transactionController.getBalance);
 router.get("/last-block", transactionController.getLastBlock);
 router.get("/transactions", transactionController.getTransactions);
+router.get("/all-transactions", transactionController.getAllTransactions);
 
 module.exports = router;
