@@ -4,7 +4,7 @@ const { ec } = require("elliptic");
 const EC = new ec("secp256k1");
 
 exports.getBalance = async (req, res, next) => {
-  const { address } = req.body;
+  const { address } = req.params;
   console.log("Balance: " + elementCoin.getBalanceOfWallet(address));
   return res.json({
     balance: elementCoin.getBalanceOfWallet(address),
