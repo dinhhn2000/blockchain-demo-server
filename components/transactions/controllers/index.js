@@ -1,10 +1,11 @@
 const Transaction = require("../models");
 const elementCoin = require("../../../utils/blockchain");
-const { ec } = require("elliptic");
-const EC = new ec("secp256k1");
 
 exports.getBalance = async (req, res, next) => {
-  const { address } = req.params;
+  const { address } = req.query;
+  console.log(address);
+  
+  
   console.log("Balance: " + elementCoin.getBalanceOfWallet(address));
   return res.json({
     balance: elementCoin.getBalanceOfWallet(address),
